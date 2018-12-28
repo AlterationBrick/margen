@@ -14,11 +14,9 @@ def build_dict(infile):
         where frequency is the number of times word_2 follows word_1
     """
     d = dict()
-    file_str = infile.read()
-    file_ls = file_str.split()
-    for i in range(len(file_ls) - 1):
-        cur_word = file_ls[i]
-        next_word = file_ls[i+1]
+    L = infile.read().split()
+    for i in range(len(L) - 1):
+        cur_word, next_word = L[i], L[i+1]
         if cur_word in d:
             if next_word in d[cur_word]:
                 d[cur_word][next_word] += 1
@@ -39,13 +37,10 @@ def build_text(word_dict, num_words):
     s = ""
     cur_word = random.choice(list(word_dict.keys()))
     for _ in range(num_words):
-        choices = word_dict[cur_word]
-        choices_list = []
-        for word in choices:
-            choices_list.append( (choices[word] * random.random(), word) )
-        next_word = sorted(choices_list, reverse=True)[0][1]
         s += cur_word + " "
-        cur_word = next_word
+        choices = word_dict[cur_word]
+        choices_list = [(choices[word] * random.random(), word) for word in choices]
+        cur_word = sorted(choices_list)[-1][1]
     return s
 
 if __name__ == "__main__":
